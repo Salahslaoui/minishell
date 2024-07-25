@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 09:07:47 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/23 09:52:36 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:20:29 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_close(int *pip)
 // 	wait(0);
 // }
 
-void ft_execution(char **hadik, char **array)
+void ft_execution(t_exct *hadik, char **array)
 {
 	int	l;
 

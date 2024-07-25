@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 23:15:43 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/23 00:35:04 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:14:00 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
-
-typedef struct s_exct
-{
-	char	*cmd;
-	char	**arg;
-	char	**opt;
-	int		pip;
-	struct s_exct	*next;
-}	t_exct;
 
 typedef struct s_exp
 {
@@ -58,16 +49,29 @@ typedef struct s_cmd
 	struct s_cmd *next; 
 }	t_cmd;
 
+typedef struct s_exct
+{
+	char	*cmd;
+	char	**args;
+	int		pip;
+	int		file_in;
+	int		file_out;
+	struct s_exct	*next;
+}	t_exct;
 
-int	ft_strcmp(const char *s1, const char *s2);
+//				UTILS<><>
+int		ft_strcmp(const char *s1, const char *s2);
 void	ft_var_init(t_detail *var);
 void	ft_pipe_cmd(char **av, int *pip, char **env, t_detail *var);
 void	ft_redirection_cmd(char **av, int *pip, int i, t_detail *var);
+void	ft_lstadd_back_exct(t_exct **lst, t_exct *new);
+
 
 //				EXECUTE CMD
-void	ft_cmd_to_cmd(char **hadik, char **array);
-void	ft_cmd_loop(char **hadik, char **env);
-void	ft_execute_last_one(char *av, int *pip, char **env);
+void	ft_execution(t_exct *hadik, char **array);
+void	ft_cmd_to_cmd(t_exct *hadik, char **array);
+void	ft_cmd_loop(t_exct *hadik, char **env);
+void	ft_execute_last_one(char **av, int *pip, char **env, t_detail *var);
 void	ft_execute_one_cmd(char **av, int *pip, char **env, t_detail *var);
 void	ft_first_one(char **av, int *pip, char **env, t_detail *var);
 void	ft_cmd_execute(char **av, int *pip, char **env, t_detail *var);

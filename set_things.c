@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:32:12 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/23 10:59:40 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:25:33 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_exct	*ft_lstnew_hadik(char *str)
 	if (!lst)
 		return (NULL);
 	lst->cmd = NULL;
-	lst->arg = NULL;
-	lst->opt = NULL;
+	lst->args = NULL;
+	// lst->opt = NULL;
 	lst->pip = 0;
 	lst->next = NULL;
 	return (lst);
@@ -175,7 +175,7 @@ t_list	*ft_search_val(t_list *av, char *val)
 
 void	fill_struct(t_exct **hadik, char *arr)
 {
-	// t_exct	*lst;
+	t_exct	*lst;
 	// char	**sp;
 	// char	**fp;
 	// int		i;
@@ -200,101 +200,154 @@ void	fill_struct(t_exct **hadik, char *arr)
 	// 	i++;
 	// }
 	*hadik = ft_lstnew_hadik(arr);
-	(*hadik)->cmd = ft_strdup("cd");
-	(*hadik)->arg = malloc(sizeof(char *) * 3);
-	(*hadik)->arg[0] = ft_strdup("/Library/Scripts/42");
-	(*hadik)->arg[1] = ft_strdup("dasdsaf");
-	(*hadik)->arg[2] = NULL;
-	(*hadik)->opt = malloc(sizeof(char *) * 3);
-	(*hadik)->opt[0] = ft_strdup("-la");
-	(*hadik)->opt[1] = ft_strdup("-ds");
-	(*hadik)->opt[2] = NULL;
+	(*hadik)->cmd = ft_strdup("cat");
+	(*hadik)->args = malloc (sizeof(char *) * 2);
+	(*hadik)->args[0] = ft_strdup("cat");
+	(*hadik)->args[1] = NULL;
+	lst = ft_lstnew_hadik(arr);
+	lst->cmd = ft_strdup("cat");
+	lst->args = malloc (sizeof(char *) * 2);
+	lst->args[0] = ft_strdup("cat");
+	lst->args[1] = NULL;
+	ft_lstadd_back_exct(&(*hadik), lst);
+	lst = ft_lstnew_hadik(arr);
+	lst->cmd = ft_strdup("cat");
+	lst->args = malloc (sizeof(char *) * 2);
+	lst->args[0] = ft_strdup("cat");
+	lst->args[1] = NULL;
+	ft_lstadd_back_exct(&(*hadik), lst);
+	lst = ft_lstnew_hadik(arr);
+	lst->cmd = ft_strdup("cat");
+	lst->args = malloc (sizeof(char *) * 2);
+	lst->args[0] = ft_strdup("cat");
+	lst->args[1] = NULL;
+	ft_lstadd_back_exct(&(*hadik), lst);
+	// (*hadik)->cmd = ft_strdup("cat");
+	// (*hadik)->args = malloc (sizeof(char *) * 2);
+	// (*hadik)->args[0] = ft_strdup("cat");
+	// (*hadik)->args[1] = NULL;
+	// lst = ft_lstnew_hadik(arr);
+	// lst->cmd = ft_strdup("cat");
+	// lst->args = malloc (sizeof(char *) * 2);
+	// lst->args[0] = ft_strdup("cat");
+	// lst->args[1] = NULL;
+	// ft_lstadd_back_exct(&(*hadik), lst);
+	// (*hadik)->cmd = ft_strdup("cat");
+	// (*hadik)->args = malloc (sizeof(char *) * 2);
+	// (*hadik)->args[0] = ft_strdup("cat");
+	// (*hadik)->args[1] = NULL;
+	lst = ft_lstnew_hadik(arr);
+	lst->cmd = ft_strdup("ls");
+	lst->args = malloc (sizeof(char *) * 2);
+	lst->args[0] = ft_strdup("ls");
+	lst->args[1] = NULL;
+	ft_lstadd_back_exct(&(*hadik), lst);
+	// lst = ft_lstnew_hadik(arr);
+	// lst->cmd = ft_strdup("wc");
+	// lst->args = malloc (sizeof(char *) * 2);
+	// lst->args[0] = ft_strdup("wc");
+	// lst->args[1] = NULL;
+	// ft_lstadd_back_exct(&(*hadik), lst);
+	// (*hadik)->opt = NULL;
+	// (*hadik)->arg = malloc(sizeof(char *) * 3);
+	// (*hadik)->arg[0] = ft_strdup("/Library/Scripts/42");
+	// (*hadik)->arg[1] = ft_strdup("dasdsaf");
+	// (*hadik)->arg[2] = NULL;
+	// (*hadik)->opt = malloc(sizeof(char *) * 3);
+	// (*hadik)->opt[0] = ft_strdup("-la");
+	// (*hadik)->opt[1] = ft_strdup("-ds");
+	// (*hadik)->opt[2] = NULL;
 	// printf("%s\n", hadik->cmd);
 }
 
-char	**fill_sp(t_exct *hadik, char **sp)
-{
-	int		i;
-	int		j;
+// char	**fill_sp(t_exct *hadik, char **sp)
+// {
+// 	int		i;
+// 	int		j;
 
-	i = 0;
-	j = 0;
-	if (hadik->cmd)
-	{
-		sp[i] = hadik->cmd;
-		i++;
-	}
-	while (hadik->arg[j])
-	{
-		sp[i] = hadik->arg[j];
-		i++;
-		j++;
-	}
-	j = 0;
-	while (hadik->opt[j])
-	{
-		sp[i] = hadik->opt[j];
-		i++;
-		j++;
-	}
-	sp[i] = NULL;
-	return (sp);
-}
+// 	i = 0;
+// 	j = 0;
+// 	if (hadik->cmd)
+// 	{
+// 		sp[i] = hadik->cmd;
+// 		i++;
+// 	}
+// 	while (hadik->args && hadik->args[j])
+// 	{
+// 		sp[i] = hadik->arg[j];
+// 		i++;
+// 		j++;
+// 	}
+// 	j = 0;
+// 	while (hadik->opt && hadik->opt[j])
+// 	{
+// 		sp[i] = hadik->opt[j];
+// 		i++;
+// 		j++;
+// 	}
+// 	sp[i] = NULL;
+// 	return (sp);
+// }
 
-char	**ft_struct_to_av(t_exct *hadik)
-{
-	char	**sp;
-	int		i;
-	int		j;
+// char	**ft_struct_to_av(t_exct *hadik)
+// {
+// 	char	**sp;
+// 	int		i;
+// 	char	*fp;
+// 	char	*tmp;
+// 	int		j;
 
-	i = 0;
-	j = 0;
-	if (hadik->cmd)
-		i++;
-	while (hadik->arg[j++])
-		i++;
-	j = 0;
-	while (hadik->opt[j++])
-		i++;
-	sp = malloc((sizeof(char *)) * (i + 1));
-	sp = fill_sp(hadik, sp);
-	return (sp);
-}
+// 	i = 0;
+// 	j = 0;
+// 	fp = malloc(1);
+// 	tmp = fp;
+// 	if (hadik->cmd)
+// 		i++;
+// 	while (hadik->arg && hadik->arg[j++])
+// 		i++;
+// 	j = 0;
+// 	while (hadik->opt && hadik->opt[j++])
+// 		i++;
+// 	sp = malloc((sizeof(char *)) * (i + 1));
+// 	sp = fill_sp(hadik, sp);
+// 	return (sp);
+// }
 
 int main(int ac, char **argv, char  **env)
 {
 	(void)ac;
 	(void)argv;
-	// t_list	*av;
+	t_list	*av;
 	t_exct	*hadik;
 	char	*arr;
-	char	**sp;
+	// char	**sp;
 	char	**array;
 	int		i;
 
-	env = NULL;
+	// env = NULL;
 	arr = NULL;
 	array = NULL;
 	i = 0;
-	// av = ft_set_env(env);
+	av = ft_set_env(env);
 	// while(1)
 	// {
-		// array = list_t_array(av);
-	// 	if (ft_strlen(arr) > 0)
-	// 		add_history(arr);
-	// 	if (ft_strcmp("cd", hadik.cmd) == 0)
-	// 		cd(NULL, &hadik, av);
-	// }
+		array = list_t_array(av);
 		// arr = readline("akoutate>");
+		// if (ft_strlen(arr) > 0)
+			// add_history(arr);
+		fill_struct(&hadik, arr);
+		ft_execution(hadik , array);
+		// if (ft_strcmp("cd", hadik->cmd) == 0)
+			// cd(NULL, hadik, av);
+	// }
 		// if (!arr)
 		// {
 		// 	printf("exit\n");
 		// 	exit(1);
 		// }
 		// sp = ft_struct_to_av(&hadik);
-		fill_struct(&hadik, arr);
-		sp = ft_struct_to_av(hadik);
-		ft_cmd_to_cmd(sp, array);
+		// sp = ft_struct_to_av(hadik);
+		// printf ("%s\n", sp[0]);
 	// 	arr = hadik->cmd;
 	// printf("%s\n", hadik->arg[0]);
 	// while (hadik)

@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 04:24:34 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/21 20:30:02 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:35:27 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,12 @@ void	ft_pipe_cmd(char **av, int *pip, char **env, t_detail *var)
 		var->last_cmd = var->id;
 	if (var->save != 0)
 		close(var->save);
-	if (var->j == 1 && var->id == 0 && av[var->j][0] != 'b')
+	if (var->j == 0 && var->id == 0)
 		ft_first_one(av , pip, env, var);
-	if (var->j > 1 && var->j < var->i && var->id == 0)
-	{
-		if (av[var->j][0] != 'b' && av[var->j][0] != 'a')
+	if (var->j > 0 && var->j < var->i && var->id == 0)
 			ft_cmd_execute(av, pip, env, var);
-	}
-	if (var->j == var->i && var->id == 0 && av[var->j][0] != 'b')
-		ft_execute_last_one(av[var->j], pip, env);
+	if (var->j == var->i && var->id == 0)
+		ft_execute_last_one(av, pip, env, var);
 	// if (av[var->j][0] == 'b' || av[var->j][0] == 'a')
 	// 	ft_redirection_cmd(av, pip, var->j, var);
 	var->save = dup(pip[0]);

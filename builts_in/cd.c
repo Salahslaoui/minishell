@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 15:15:16 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/23 09:51:35 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:19:37 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	cd_path(t_exct *av, t_list *ar)
 			break;
 		ar = ar->next;
 	}
-	if (chdir(av->arg[0]) == -1)
+	if (chdir(av->args[0]) == -1)
 	{
 		perror("error cd ");
 		return ;
@@ -65,7 +65,7 @@ void	cd(char **arg, t_exct *a, t_list *av)
 	arg = NULL;
 	i = 0;
 	j = 0;
-	if (!a->arg[0])
+	if (!a->args[0])
 	{
 		cd_home(av);
 		return ;

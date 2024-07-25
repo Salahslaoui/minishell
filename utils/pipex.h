@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 09:28:07 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/23 00:33:03 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:19:53 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-void	ft_cmd_to_cmd(char **hadik, char **array);
-void	ft_cmd_loop(char **hadik, char **env);
+// void	ft_cmd_to_cmd(char **hadik, char **array);
+// void	ft_cmd_loop(char **hadik, char **env);
 // void	ft_execute_last_one(char **av, int *pip, char **env, t_detail *var);
 // void	ft_execute_one_cmd(char *av, int *pip, char **env);
 // void	ft_first_one(char *av, int *pip, char **env);
