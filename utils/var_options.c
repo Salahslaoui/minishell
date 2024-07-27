@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+ /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   var_options.c                                      :+:      :+:    :+:   */
@@ -6,12 +6,37 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 04:24:34 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/25 01:35:27 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/26 09:54:24 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "pipex.h"
+
+void	ft_exit_fd(int	*pip, t_exct *av, int i)
+{
+	int	j;
+
+	j = 0;
+	close(pip[0]);
+	close(pip[1]);
+	if (access(av->red[i + 1], F_OK) == -1)
+	{
+		write(2, "bash: ", 7);
+		while (av->red[i + 1][j])
+			write(2, &av->red[i + 1][j++], 1);
+		write(2, ": No such file or directory\n", 29);
+		exit(1);
+	}
+	else if (av->red[i][0] == '<' && access(av->red[i + 1], R_OK) == -1)
+	{
+		write(2, "bash: ", 7);
+		while (av->red[i + 1][j])
+			write(2, &av->red[i + 1][j++], 1);
+		write(2, ": Permission denied\n", 21);
+		exit(1);
+	}
+}
 
 void	ft_var_init(t_detail *var)
 {
@@ -21,64 +46,55 @@ void	ft_var_init(t_detail *var)
 	var->save = 0;
 }
 
-void	ft_pipe_cmd(char **av, int *pip, char **env, t_detail *var)
+void	ft_pipe_cmd(t_exct *av, int *pip, char **env, t_detail *var)
 {
 	pipe(pip);
 	var->id = fork();
+	if (var->id == 0 && av->red)
+		ft_redirection_cmd(av, pip, var);
 	if (var->id != 0 && var->j == var->i)
 		var->last_cmd = var->id;
 	if (var->save != 0)
 		close(var->save);
-	if (var->j == 0 && var->id == 0)
-		ft_first_one(av , pip, env, var);
+	// printf("%d\n", var->j);
+	// if (var->j == 0 && var->id == 0)
+	// 	ft_first_one(av->args , pip, env, var);
 	if (var->j > 0 && var->j < var->i && var->id == 0)
-			ft_cmd_execute(av, pip, env, var);
+			ft_cmd_execute(av->args, pip, env, var);
 	if (var->j == var->i && var->id == 0)
-		ft_execute_last_one(av, pip, env, var);
-	// if (av[var->j][0] == 'b' || av[var->j][0] == 'a')
-	// 	ft_redirection_cmd(av, pip, var->j, var);
+		ft_execute_last_one(av->args, pip, env, var);
 	var->save = dup(pip[0]);
 	close(pip[0]);
 	dup2(var->save, 0);
 	close(pip[1]);
 }
 
-void	ft_redirection_cmd(char **av, int *pip, int i, t_detail *var)
+void	ft_redirection_cmd(t_exct *av, int *pip, t_detail *var)
 {
-	// char	**cmd;
-	// char	*fp;
-	// int		fd;
+	int	i;
 
-	pipe(pip);
-	if (av[var->j][0] == 'a')
+	i = 0;
+	// pipe(pip);
+	// fprintf(stderr, "REACHED: %s\n", av->red[i + 1]);
+	while (av->red[i])
 	{
-		var->fd = open(av[var->j + 1], O_RDONLY, 0777);
-		dup2(var->fd, 0);
+		if (av->red[i][0] == '<' && av->red[i + 1])
+		{
+			var->fd = open(av->red[i + 1], O_RDONLY, 0644);
+			dup2(var->fd, 0);
+		}
+		else if (av->red[i][0] == '>' && av->red[i + 1])
+		{
+			if (av->red[i][1] && av->red[i][1] == '>')
+				var->fd = open(av->red[i + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
+			else
+				var->fd = open(av->red[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+			dup2(var->fd, 1);
+		}
+		if (var->fd == - 1)
+			ft_exit_fd(pip, av, i);
+		i += 2;
 	}
-	else if (av[i][0] == 'b')
-	{
-		if (var->fd)
-			close(var->fd);
-		var->fd = open(av[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-		dup2(var->fd, 1);
-	}
-	else if (av[var->j][0] == '>' && av[var->j][1] == '>')
-	{
-		var->fd = open(av[var->j + 1], O_WRONLY | O_APPEND, 0777);
-		dup2(var->fd, 1);
-	}
-	// if (av[var->j - 1])
-	// {	
-	// 	if (fork() == 0)
-	// 	{
-	// 		printf("%d", 5);
-	// 		close(pip[1]);
-	// 		dup2(pip[0], 0);
-	// 		fp = ft_search_path(av[var->j - 1], env, pip);
-	// 		cmd = ft_split(av[var->j - 1], ' ');
-	// 		execve(fp, cmd, env);
-	// 	}
-	// }
 }
 
 // void	f

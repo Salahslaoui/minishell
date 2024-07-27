@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:10:20 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/25 01:34:00 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/26 20:26:55 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_first_one(char **av, int *pip, char **env, t_detail *var)
 	char	*fp;
 	int		i;
 
+	printf("%d\n", var->fd);
 	i = var->j;
 	cmd = ft_split(av[i], ' ');
 	fp = ft_search_path(cmd[0], env, pip);
@@ -32,22 +33,8 @@ void	ft_first_one(char **av, int *pip, char **env, t_detail *var)
 		ft_exit(pip);
 	}
 	close(pip[0]);
-	// if (av[i + 1][0] == 'b' || av[i + 1][0] == 'a')
-	// {
-	// 	while (i + 1 < var->i + 1)
-	// 	{
-	// 		if (!av[i + 1][0])
-	// 		{
-	// 			write(2, "bash: syntax error near unexpected token `newline'\n", 53);
-	// 			ft_exit(pip);
-	// 			exit(258);
-	// 		}
-	// 		if (av[i + 1][0] == 'b' || av[i + 1][0] == 'a')
-	// 			ft_redirection_cmd(av, pip, i + 1, var);
-	// 		i += 2;
-	// 	// printf("%s\n", av[i + 1]);
-	// 	}
-	// }
+	// if (red)
+	// 	ft_
 	if (dup2(pip[1], 1) == -1)
 		ft_exit(pip);
 	execve(fp, cmd, env);
@@ -61,11 +48,10 @@ void	ft_cmd_execute(char **av, int *pip, char **env, t_detail *var)
 	int		i;
 
 	i = var->j;
-	// printf("%s\n", av[0]);
 	cmd = ft_split(av[0], ' ');
 	fp = ft_search_path(cmd[0], env, pip);
 	// printf("%s\n", av[0]);
-	close(pip[0]);
+	// close(pip[0]);
 	// if (av[i] &&  (av[i + 1][0] == 'b' || av[i + 1][0] == 'a'))
 	// {
 	// 	while (av[i] && av[i + 1])
@@ -96,18 +82,19 @@ void	ft_cmd_execute(char **av, int *pip, char **env, t_detail *var)
 	ft_exit(pip);
 }
 
-void	ft_execute_one_cmd(char **av, int *pip, char **env, t_detail *var)
+void	ft_execute_one_cmd(t_exct *av, int *pip, char **env, t_detail *var)
 {
 	char	**cmd;
 	char	*fp;
 	int		i;
-	var = NULL;
+	// var = NULL;
 	// env = NULL;
 
 	// pip[0] = 0;
 	// pip[1] = 0;
-	cmd = ft_split(av[0], ' ');
-	// printf("%d\n", pip[1]);
+	if (av->red)
+		ft_redirection_cmd(av, pip, var);
+	cmd = ft_split(av->args[0], ' ');
 	fp = ft_search_path(cmd[0], env, pip);
 	// if (av[i] && (av[i][0] == 'b' || av[i][0] == 'a'))
 	// {
@@ -115,15 +102,15 @@ void	ft_execute_one_cmd(char **av, int *pip, char **env, t_detail *var)
 	// 	ft_redirection_cmd(av, pip, i, var);
 	// 	exit(0);
 	// }
-	if (!fp)
-	{
-		write(2, "bash: command not found: ", 25);
-		i = 0;
-		while (cmd[0][i])
-			write(2, &cmd[0][i++], 1);
-		write(2, "\n", 1);
-		ft_exit(pip);
-	}
+	// if (!fp)
+	// {
+	// 	write(2, "bash: command not found: ", 25);
+	// 	i = 0;
+	// 	while (cmd[0][i])
+	// 		write(2, &cmd[0][i++], 1);
+	// 	write(2, "\n", 1);
+	// 	ft_exit(pip);
+	// }
 	execve(fp, cmd, env);
 	ft_exit(pip);
 }
@@ -147,15 +134,19 @@ void	ft_cmd_loop(t_exct *av, char **env)
 		tmp = tmp->next;
 	}
 	if (var.i == 1)
-		ft_execute_one_cmd(av->args, pip, env, &var);
-	while (var.j < var.i + 1 && av)
 	{
-		// printf("%s\n", av->args[0]);
-		ft_pipe_cmd(av->args, pip, env, &var);
-		// if (av[var.j][0] == 'a' || av[var.j][0] == 'b')
-		// 	var.j++;
-		var.j++;
-		av = av->next;
+		if (fork() == 0)
+			ft_execute_one_cmd(av, pip, env, &var);
+	}
+	else
+	{
+		while (var.j < var.i + 1 && av)
+		{
+			// printf("%s\n", av->args[0]);
+			ft_pipe_cmd(av, pip, env, &var);
+			var.j++;
+			av = av->next;
+		}
 	}
 	// waitpid(var.last_cmd, &var.ext_status, 0);
 	// /*
@@ -173,7 +164,6 @@ void	ft_execute_last_one(char **av, int *pip, char **env, t_detail *var)
 
 	i = var->j;
 	cmd = ft_split(av[0], ' ');
-	// printf("%s\n", av[0]);
 	fp = ft_search_path(cmd[0], env, pip);
 	if (!fp)
 	{
