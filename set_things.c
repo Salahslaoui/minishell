@@ -205,8 +205,8 @@ void	fill_struct(t_exct **hadik, char *arr)
 	(*hadik)->args[0] = ft_strdup("cat");
 	(*hadik)->args[1] = NULL;
 	(*hadik)->red = malloc (sizeof(char *) * 3);
-	(*hadik)->red[0] = ">";
-	(*hadik)->red[1] = "test.c";
+	(*hadik)->red[0] = "<<";
+	(*hadik)->red[1] = "test";
 	(*hadik)->red[2] = NULL;
 	// lst = ft_lstnew_hadik(arr);
 	// lst->cmd = ft_strdup("cat");

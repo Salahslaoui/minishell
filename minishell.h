@@ -67,6 +67,8 @@ void	ft_pipe_cmd(t_exct *av, int *pip, char **env, t_detail *var);
 void	ft_redirection_cmd(t_exct *av, int *pip, t_detail *var);
 void	ft_lstadd_back_exct(t_exct **lst, t_exct *new);
 
+//				REDIRECT && HERE_DOC
+char    *ft_here_doc(t_exct *av, int i, int *pip);
 
 //				EXECUTE CMD
 void	ft_execution(t_exct *hadik, char **array);
