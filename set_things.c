@@ -200,9 +200,9 @@ void	fill_struct(t_exct **hadik, char *arr)
 	// 	i++;
 	// }
 	*hadik = ft_lstnew_hadik(arr);
-	(*hadik)->cmd = ft_strdup("cat");
+	(*hadik)->cmd = ft_strdup("cd");
 	(*hadik)->args = malloc (sizeof(char *) * 2);
-	(*hadik)->args[0] = ft_strdup("cat");
+	(*hadik)->args[0] = ft_strdup("libft2");
 	(*hadik)->args[1] = NULL;
 	(*hadik)->red = malloc (sizeof(char *) * 3);
 	(*hadik)->red[0] = "<";
@@ -327,8 +327,14 @@ void	fill_struct(t_exct **hadik, char *arr)
 // 	return (sp);
 // }
 
+void l()
+{
+	system("leaks minishell");
+}
+
 int main(int ac, char **argv, char  **env)
 {
+	// atexit(l);
 	(void)ac;
 	(void)argv;
 	t_list	*av;
@@ -343,27 +349,21 @@ int main(int ac, char **argv, char  **env)
 	array = NULL;
 	i = 0;
 	av = ft_set_env(env);
-	create_var(av, "salam=xczxc");
-	// while (av)
-	// {
-	// 	printf("%s %s\n", av->name, av->content);
-	// 	av = av->next;
-	// }
 	// array = list_t_array(av);
-	// fill_struct(&hadik, arr);
-	// while(1)
-	// {
-	// 	arr = readline("akoutate>");
-	// 	if (!arr)
-	// 		exit(0);
-	// 	if (ft_strlen(arr) > 0)
-	// 		add_history(arr);
-	// 	ft_execution(hadik , array);
-	// 	// free(hadik);
-	// 	// hadik = NULL;
-	// 	// if (ft_strcmp("cd", hadik->cmd) == 0)
-	// 	// 	cd(NULL, hadik, av);
-	// }
+	fill_struct(&hadik, arr);
+	while(1)
+	{
+		arr = readline("akoutate>");
+		if (!arr)
+			exit(0);
+		if (ft_strlen(arr) > 0)
+			add_history(arr);
+		// ft_execution(hadik , array);
+		// free(hadik);
+		// hadik = NULL;
+		if (ft_strcmp("cd", arr) == 0)
+			cd(NULL, hadik, av);
+	}
 		// if (!arr)
 		// {
 		// 	printf("exit\n");

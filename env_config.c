@@ -15,41 +15,52 @@
 void	ft_modify_val(t_list *av, char *val, char *arg) // =salama
 {
 	int	i;
+	int	a;
 
 	i = 0;
+	a = 0;
 	while (arg[i] && arg[i] != '=')
 		i++;
 	if (arg[i] == '=')
+	{
+		a = 1;
 		i++;
+	}
 	free(av->content);
 	av->content = NULL;
 	val = ft_strdup(&arg[i]);
 	av->content = val;
-	// printf("%s\n", val);
-	// i = i - j - 1;
-	// j = 0;
-	// while (arg[i])
-	// {
-	// 	av->content[j] = arg[i];
-	// 	j++;
-	// 	i++;
-	// }	
 }
 
-void	ft_add_val(char *val, t_list *av, char *var)
+void	ft_modify_val_cd(t_list *av, char *val, char *arg) // =salama
+{
+	int	i;
+
+	i = 0;
+	free(av->content);
+	av->content = NULL;
+	val = ft_strdup(&arg[i]);
+	av->content = val;	
+}
+
+void	ft_add_val(char *val, t_list *av, char *var, char *arg)
 {
 	t_list	*tmp;
 	int		i;
 
 	i = 0;
-	// while (av->next)
-	// 	av = av->next;
-	tmp = ft_lstnew(val);
-	// tmp->name = var;
+	while (arg[i] != '=')
+		i++;
+	if (arg[i] == '=')
+		i++;
+	val = ft_strdup(&arg[i]);
+	tmp = ft_lstnew(arg);
+	tmp->name = var;
+	// printf("%s", var);
 	if (!val)
 		val = NULL;
 	tmp->content = val;
-	printf("%s\n", tmp->content);
+//	printf("%s\n", tmp->content);
 	ft_lstadd_back(&av, tmp);
 	// av->next = tmp;
 	// av = av->next;
@@ -104,11 +115,12 @@ void	create_var(t_list *av, char *arg)
 		i++;
 	var = malloc(i + 1);
 	i = 0;
-	while (arg[i] != '=')
+	while (arg[i] && arg[i] != '=')
 	{
 		var[i] = arg[i];
 		i++;
 	}
+	var[i] = '\0';
 	// if (arg[i] == '=')
 	// {
 	// 	i++;
@@ -136,5 +148,5 @@ void	create_var(t_list *av, char *arg)
 		tmp = tmp->next;
 	}
 	if (a == 0)
-		ft_add_val(val, av, var);
+		ft_add_val(val, av, var, arg);
 }

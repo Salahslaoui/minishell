@@ -66,6 +66,7 @@ void	ft_var_init(t_detail *var);
 void	ft_pipe_cmd(t_exct *av, int *pip, char **env, t_detail *var);
 void	ft_redirection_cmd(t_exct *av, int *pip, t_detail *var);
 void	ft_lstadd_back_exct(t_exct **lst, t_exct *new);
+void	ft_modify_val_cd(t_list *av, char *val, char *arg);
 
 //				REDIRECT && HERE_DOC
 char    *ft_here_doc(t_exct *av, int i, int *pip);

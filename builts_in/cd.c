@@ -33,9 +33,8 @@ void	cd_home(t_list *av)
 		return;
 	}
 	tmp2 = ft_search_val(av, "PWD=");
-	ft_modify_val(tmp2, val, tmp->content);
-	// printf("%s\n", tmp2->content);
-	system("pwd");
+	ft_modify_val_cd(tmp2, val, tmp->content);
+	// system("pwd");
 	return ;
 }
 
