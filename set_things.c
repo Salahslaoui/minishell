@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:32:12 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/27 13:22:21 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/28 12:42:27 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,8 +205,8 @@ void	fill_struct(t_exct **hadik, char *arr)
 	(*hadik)->args[0] = ft_strdup("cat");
 	(*hadik)->args[1] = NULL;
 	(*hadik)->red = malloc (sizeof(char *) * 3);
-	(*hadik)->red[0] = "<<";
-	(*hadik)->red[1] = "test";
+	(*hadik)->red[0] = "<";
+	(*hadik)->red[1] = "Makefile";
 	(*hadik)->red[2] = NULL;
 	// lst = ft_lstnew_hadik(arr);
 	// lst->cmd = ft_strdup("cat");
@@ -240,22 +240,22 @@ void	fill_struct(t_exct **hadik, char *arr)
 	// (*hadik)->args = malloc (sizeof(char *) * 2);
 	// (*hadik)->args[0] = ft_strdup("cat");
 	// (*hadik)->args[1] = NULL;
-	// lst = ft_lstnew_hadik(arr);
-	// lst->cmd = ft_strdup("ls");
-	// lst->args = malloc (sizeof(char *) * 2);
-	// lst->args[0] = ft_strdup("cat");
-	// lst->args[1] = NULL;
-	// lst->red = malloc (sizeof(char *) * 9);
-	// lst->red[0] = ">";
-	// lst->red[1] = "salama";
-	// lst->red[2] = ">";
-	// lst->red[3] = "salam";
-	// lst->red[4] = ">";
-	// lst->red[5] = "sala";
-	// lst->red[6] = ">";
-	// lst->red[7] = "sal";
-	// lst->red[8] = NULL;
-	// ft_lstadd_back_exct(&(*hadik), lst);
+	lst = ft_lstnew_hadik(arr);
+	lst->cmd = ft_strdup("ls");
+	lst->args = malloc (sizeof(char *) * 2);
+	lst->args[0] = ft_strdup("cat");
+	lst->args[1] = NULL;
+	lst->red = malloc (sizeof(char *) * 9);
+	lst->red[0] = ">";
+	lst->red[1] = "salama";
+	lst->red[2] = ">";
+	lst->red[3] = "salam";
+	lst->red[4] = ">";
+	lst->red[5] = "sala";
+	lst->red[6] = ">";
+	lst->red[7] = "sal";
+	lst->red[8] = NULL;
+	ft_lstadd_back_exct(&(*hadik), lst);
 	// lst = ft_lstnew_hadik(arr);
 	// lst->cmd = ft_strdup("wc");
 	// lst->args = malloc (sizeof(char *) * 2);
@@ -343,21 +343,27 @@ int main(int ac, char **argv, char  **env)
 	array = NULL;
 	i = 0;
 	av = ft_set_env(env);
-	array = list_t_array(av);
-	fill_struct(&hadik, arr);
-	while(1)
-	{
-		arr = readline("akoutate>");
-		if (!arr)
-			exit(0);
-		if (ft_strlen(arr) > 0)
-			add_history(arr);
-		ft_execution(hadik , array);
-		// free(hadik);
-		// hadik = NULL;
-		// if (ft_strcmp("cd", hadik->cmd) == 0)
-		// 	cd(NULL, hadik, av);
-	}
+	create_var(av, "salam=xczxc");
+	// while (av)
+	// {
+	// 	printf("%s %s\n", av->name, av->content);
+	// 	av = av->next;
+	// }
+	// array = list_t_array(av);
+	// fill_struct(&hadik, arr);
+	// while(1)
+	// {
+	// 	arr = readline("akoutate>");
+	// 	if (!arr)
+	// 		exit(0);
+	// 	if (ft_strlen(arr) > 0)
+	// 		add_history(arr);
+	// 	ft_execution(hadik , array);
+	// 	// free(hadik);
+	// 	// hadik = NULL;
+	// 	// if (ft_strcmp("cd", hadik->cmd) == 0)
+	// 	// 	cd(NULL, hadik, av);
+	// }
 		// if (!arr)
 		// {
 		// 	printf("exit\n");

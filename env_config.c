@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 03:22:44 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/23 10:58:53 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/07/28 12:46:13 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ void	ft_modify_val(t_list *av, char *val, char *arg) // =salama
 	int	i;
 
 	i = 0;
-	// while (arg[i] && arg[i] == '=')
-	// 	i++;
-	// if (arg[i] == '=')
-	// 	i++;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	if (arg[i] == '=')
+		i++;
 	free(av->content);
 	av->content = NULL;
 	val = ft_strdup(&arg[i]);
 	av->content = val;
+	// printf("%s\n", val);
 	// i = i - j - 1;
 	// j = 0;
 	// while (arg[i])
@@ -41,15 +42,17 @@ void	ft_add_val(char *val, t_list *av, char *var)
 	int		i;
 
 	i = 0;
-	while (av->next)
-		av = av->next;
-	tmp = ft_lstnew(var);
-	tmp->name = var;
+	// while (av->next)
+	// 	av = av->next;
+	tmp = ft_lstnew(val);
+	// tmp->name = var;
 	if (!val)
 		val = NULL;
 	tmp->content = val;
-	av->next = tmp;
-	av = av->next;
+	printf("%s\n", tmp->content);
+	ft_lstadd_back(&av, tmp);
+	// av->next = tmp;
+	// av = av->next;
 	// printf("%s\n", av->content);
 	// ft_lstadd_back(&av, tmp);
 }

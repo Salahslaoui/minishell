@@ -6,7 +6,7 @@
 #    By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/23 09:26:32 by sslaoui           #+#    #+#              #
-#    Updated: 2024/07/25 20:10:15 by sslaoui          ###   ########.fr        #
+#    Updated: 2024/07/28 00:24:16 by sslaoui          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ FLAGS2 =   -lreadline
 NAME = minishell
 
 SRC =	set_things.c libft2/ft_lstnew_bonus.c libft2/ft_lstadd_back_bonus.c libft2/ft_strdup.c libft2/ft_strlen.c \
-		libft2/ft_strncmp.c env_config.c libft2/ft_strjoin.c libft2/ft_split.c ft_strcmp.c utils/here_doc.c \
+		libft2/ft_strncmp.c env_config.c libft2/ft_strjoin.c libft2/ft_split.c ft_strcmp.c\
 		builts_in/cd.c utils/execute.c utils/fetch_path.c utils/var_options.c utils/pipex.c
 
 OBJ =	$(SRC:.c=.o)

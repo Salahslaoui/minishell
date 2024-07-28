@@ -36,6 +36,14 @@ void	ft_exit_fd(int	*pip, t_exct *av, int i)
 		write(2, ": Permission denied\n", 21);
 		exit(1);
 	}
+	else if (av->red[i][0] == '>' && access(av->red[i + 1], R_OK | W_OK) == -1)
+	{
+		write(2, "bash: ", 7);
+		while (av->red[i + 1][j])
+			write(2, &av->red[i + 1][j++], 1);
+		write(2, ": Permission denied\n", 21);
+		exit(1);
+	}
 }
 
 void	ft_var_init(t_detail *var)
@@ -74,8 +82,6 @@ void	ft_redirection_cmd(t_exct *av, int *pip, t_detail *var)
 	int	i;
 
 	i = 0;
-	// pipe(pip);
-	// fprintf(stderr, "REACHED: %s\n", av->red[i + 1]);
 	while (av->red[i])
 	{
 		if (av->red[i][0] == '<' && av->red[i + 1])
@@ -89,6 +95,8 @@ void	ft_redirection_cmd(t_exct *av, int *pip, t_detail *var)
 				var->fd = open(av->red[i + 1], O_RDWR | O_CREAT | O_APPEND, 0644);
 			else
 				var->fd = open(av->red[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+			if (var->fd == -1)
+				ft_exit_fd(pip, av, i);
 			dup2(var->fd, 1);
 		}
 		if (var->fd == - 1)
