@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:32:12 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/07/28 12:42:27 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/08/02 11:43:57 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,30 @@ void	ft_free(char **my_env)
 	free(my_env);
 }
 
-void	ft_name_env(t_list *n, char *env)
+void	ft_name_env(t_list *n, char *env, int *a)
 {
 	int	i;
 	int	j;
+	int	k;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	while (env[i] != '=')
 		i++;
-	i++;
+	if (env[i - 1] && env[i - 1] == '+' && env[i] == '=')
+		*a = 1;
+	if (env[i - 1] && env[i - 1] == '+')
+		i--;
+	// i++;
 	n->name = malloc(i + 1);
 	while (j < i)
 	{
-		n->name[j] = env[j];
+		if (env[k] == '+')
+			k++;
+		n->name[j] = env[k];
 		j++;
+		k++;
 	}
 	n->name[j] = '\0';
 }
@@ -82,28 +91,39 @@ void	ft_val_name(t_list *n, char *env)
 {
 	int	i;
 	int	j;
-	int	a;
+	int	len;
 
 	i = 0;
 	j = 0;
-	while (env[i] != '=')
+	while (env[i] && env[i] != '=')
 		i++;
 	while (env[j])
 		j++;
-	a = j - i;
-	n->content = malloc(a + 1);
+	len = j - i + 1;
+	if (n->content)
+		free(n->content);
+	n->content = malloc(len + 1);
 	j = 0;
-	i++;
+	len = 0;
+	if (env[i] == '=')
+	{
+		i++;
+		len = 1;
+	}
 	while (env[i])
 		n->content[j++] = env[i++];
 	n->content[j] = '\0';
+	if (j == 0)
+		n->content = NULL;
+	if (!n->content && len == 1)
+		n->content = "";
 }
 
 t_list	*ft_set_env(char **env)
 {
 	t_list	*hrba;
 	t_list	*n;
-	// char	
+	int	a;
 	int	i;
 
 	i = 0;
@@ -111,7 +131,7 @@ t_list	*ft_set_env(char **env)
 	while (env[i])
 	{
 		n = ft_lstnew(env[i]);
-		ft_name_env(n, env[i]);
+		ft_name_env(n, env[i], &a);
 		ft_val_name(n, env[i]);
 		ft_lstadd_back(&hrba, n);
 		i++;
@@ -145,10 +165,8 @@ void	ft_delete_val(char	*val, t_list **av)
 	{
 		if (ft_strncmp(current->name, val, ft_strlen(val)) == 0)
 		{
-			if (previous == 0)
-			{
+			if (previous == 0 && current->next)
 				*av = current->next;
-			}
 			else
 				previous->next = current->next;
 			free(current);
@@ -166,7 +184,7 @@ t_list	*ft_search_val(t_list *av, char *val)
 	tmp = av;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->name, val, ft_strlen(val)) == 0)
+		if (ft_strcmp(tmp->name, val) == 0)
 			return (tmp);
 		tmp = tmp->next;
 	}
@@ -202,8 +220,9 @@ void	fill_struct(t_exct **hadik, char *arr)
 	*hadik = ft_lstnew_hadik(arr);
 	(*hadik)->cmd = ft_strdup("cd");
 	(*hadik)->args = malloc (sizeof(char *) * 2);
-	(*hadik)->args[0] = ft_strdup("libft2");
-	(*hadik)->args[1] = NULL;
+	(*hadik)->args[0] = ft_strdup("export");
+	(*hadik)->args[1] = "USER=";
+	(*hadik)->args[2] = NULL;
 	(*hadik)->red = malloc (sizeof(char *) * 3);
 	(*hadik)->red[0] = "<";
 	(*hadik)->red[1] = "Makefile";
@@ -240,22 +259,22 @@ void	fill_struct(t_exct **hadik, char *arr)
 	// (*hadik)->args = malloc (sizeof(char *) * 2);
 	// (*hadik)->args[0] = ft_strdup("cat");
 	// (*hadik)->args[1] = NULL;
-	lst = ft_lstnew_hadik(arr);
-	lst->cmd = ft_strdup("ls");
-	lst->args = malloc (sizeof(char *) * 2);
-	lst->args[0] = ft_strdup("cat");
-	lst->args[1] = NULL;
-	lst->red = malloc (sizeof(char *) * 9);
-	lst->red[0] = ">";
-	lst->red[1] = "salama";
-	lst->red[2] = ">";
-	lst->red[3] = "salam";
-	lst->red[4] = ">";
-	lst->red[5] = "sala";
-	lst->red[6] = ">";
-	lst->red[7] = "sal";
-	lst->red[8] = NULL;
-	ft_lstadd_back_exct(&(*hadik), lst);
+	// lst = ft_lstnew_hadik(arr);
+	// lst->cmd = ft_strdup("ls");
+	// lst->args = malloc (sizeof(char *) * 2);
+	// lst->args[0] = ft_strdup("cat");
+	// lst->args[1] = NULL;
+	// lst->red = malloc (sizeof(char *) * 9);
+	// lst->red[0] = ">";
+	// lst->red[1] = "salama";
+	// lst->red[2] = ">";
+	// lst->red[3] = "salam";
+	// lst->red[4] = ">";
+	// lst->red[5] = "sala";
+	// lst->red[6] = ">";
+	// lst->red[7] = "sal";
+	// lst->red[8] = NULL;
+	// ft_lstadd_back_exct(&(*hadik), lst);
 	// lst = ft_lstnew_hadik(arr);
 	// lst->cmd = ft_strdup("wc");
 	// lst->args = malloc (sizeof(char *) * 2);
@@ -334,7 +353,7 @@ void l()
 
 int main(int ac, char **argv, char  **env)
 {
-	// atexit(l);
+	atexit(l);
 	(void)ac;
 	(void)argv;
 	t_list	*av;
@@ -349,8 +368,9 @@ int main(int ac, char **argv, char  **env)
 	array = NULL;
 	i = 0;
 	av = ft_set_env(env);
-	// array = list_t_array(av);
+	array = list_t_array(av);
 	fill_struct(&hadik, arr);
+	// export(av, hadik);
 	while(1)
 	{
 		arr = readline("akoutate>");
@@ -361,8 +381,7 @@ int main(int ac, char **argv, char  **env)
 		// ft_execution(hadik , array);
 		// free(hadik);
 		// hadik = NULL;
-		if (ft_strcmp("cd", arr) == 0)
-			cd(NULL, hadik, av);
+		ft_builts_in(arr, hadik, &av);
 	}
 		// if (!arr)
 		// {
